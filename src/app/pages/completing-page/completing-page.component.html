@@ -1,0 +1,18 @@
+<button routerLink="/main" class="returnButton" (click)="clearFileInput()">Back</button>
+
+<div class="container">
+    <div id="showFileContainer">
+        <pdf-viewer [src]="pdfSrc"
+              [render-text]="true"
+              [original-size]="false"
+              style="width: 100%; height: 100%"
+        ></pdf-viewer>
+    </div>
+    <div id="inputFieldsContainer">
+        <div class="inputContainer" *ngFor="let property of properties">
+            <label for="property">{{property}}</label>
+            <input type="text" id={{property}} #box [placeholder]="property" (keyup)="this.setObjectProperties(box)">
+        </div>
+        <button (click)="this.service.generate()">Button</button>
+    </div>
+</div>

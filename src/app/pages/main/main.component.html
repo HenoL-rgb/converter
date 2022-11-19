@@ -1,0 +1,16 @@
+
+<div class="container">
+    <input type="file" class="file-input" id="doc"
+    (change)="service.onFileSelected($event)" #fileUpload>
+    <div class="fileContainer" (click)="fileUpload.click()">
+        <div class="fileContainer__upload">
+
+            {{service.fileName || "No file uploaded yet."}}
+  
+            <button mat-mini-fab color="primary" class="fileContainer__upload__btn">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
+    </div>
+    <button routerLink="/completing-page" *ngIf="service.isUploaded" [@inOutAnimation] class="completeBtn" (click)="service.getFileReplacements()">Complete</button>
+</div>

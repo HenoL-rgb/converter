@@ -1,0 +1,48 @@
+.container {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    color: black;
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.2);
+}
+
+.returnButton {
+    padding: 10px;
+    border: 0;
+    background-color: transparent;
+    font-family: 'IBM Plex Sans', sans-serif;
+    position: relative;
+    margin: 15px 0 15px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    &:before {
+        content: '<';
+        margin-right: 5px;
+        color: red;
+    }
+}
+
+#inputFieldsContainer {
+    border-left: 1px solid rgba(0,0,0,0.2);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    .inputContainer {
+        display: grid;
+        grid-template-columns: 30% 1fr;
+        & input {
+            border: 1px solid rgba(0,0,0,0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            outline: 0;
+            max-width: 300px;
+            transition: border 0.2s;
+            &:focus {
+                border: 1px solid rgba(255, 12, 12, 0.884);
+                border-width: 1px;
+            }
+        }
+    }
+}
