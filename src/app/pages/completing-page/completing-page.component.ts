@@ -24,7 +24,6 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
   getProperties(): void {
     if(localStorage.hasOwnProperty('properties')) {
       this.properties = localStorage.getItem('properties')!.split(',');
-      // this.renderFields();
       return;
     }
 
