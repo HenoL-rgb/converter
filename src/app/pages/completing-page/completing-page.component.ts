@@ -12,7 +12,6 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
   constructor(private http:HttpClient, public service:FilesService) { }
   
   properties: string[] = [];
-  a: string = 'a';
   pdfSrc = `/assets/${this.service.fileName}`;
 
   ngOnInit(): void {
@@ -34,25 +33,6 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
       console.log(this.properties.toString());
       localStorage.setItem('properties', this.properties.toString());
     });
-  }
-
-  renderFields() {
-    const container = document.getElementById('inputFieldsContainer');
-    for(let property of this.properties) {
-      const inputContainer = document.createElement('div');
-      let input = document.createElement('input')
-      let label = document.createElement('Label')
-
-      input.id = `input_${property}`;
-      input.placeholder = `${property}`
-      input.setAttribute('type', 'text');
-      label.setAttribute('for', input.id);
-      label.innerHTML = `${property} `;
-      inputContainer.classList.add('inputContainer');
-
-      inputContainer.append(label, input);
-      container?.append(inputContainer);
-    }
   }
 
   setObjectProperties(field) { 
