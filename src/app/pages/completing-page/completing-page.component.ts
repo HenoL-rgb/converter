@@ -12,6 +12,7 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
   constructor(private http:HttpClient, public service:FilesService) { }
   
   properties: string[] = [];
+  a: number = 4;
   pdfSrc = `/assets/${this.service.fileName}`;
 
   ngOnInit(): void {
