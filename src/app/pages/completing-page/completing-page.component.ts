@@ -33,7 +33,6 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
       this.properties = str.split(' ');
       console.log(this.properties.toString());
       localStorage.setItem('properties', this.properties.toString());
-      // this.renderFields();
     });
   }
 
