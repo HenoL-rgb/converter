@@ -4,16 +4,29 @@ h1 {
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    row-gap: 25px;
-    &__buttons a {
-        text-decoration: none;
-        background-color: red;
-        padding: 10px 15px;
-        border-radius: 15px;
-        color: white;
-        font-size: 18px;
-        font-weight: 500;
+
+    height: 100vh;
+    padding: 40px;
+    display: grid;
+    place-items: center;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 25px;
+        &__buttons{
+    
+            display: flex;
+            column-gap: 50px;
+            & a {
+                text-decoration: none;
+                background-color: #DE1200;
+                padding: 10px 15px;
+                border-radius: 15px;
+                color: white;
+                font-size: 18px;
+            }
+        } 
     }
 }

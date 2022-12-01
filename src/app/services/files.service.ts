@@ -18,9 +18,7 @@ export class FilesService {
   file: any;  
   teststr = '';
   properties: string[] = [];
-  testObj = {
-    
-  }
+  testObj = {};
 
   setObjectProperties(str: string) { 
     const objPropeties = str.split(' ');
@@ -126,6 +124,7 @@ export class FilesService {
 
   generate() {
     let g = this.testObj
+    let file = this.file;
     let reader = new FileReader();
     //let str = '';
     reader.readAsBinaryString(this.file as Blob);
@@ -142,12 +141,8 @@ export class FilesService {
             linebreaks: true,
         });
         // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
-        // str = doc.getZip().generate({
-        //   type: "string",
-          
-        // });
+ 
         doc.render(g);
-     
         let blob = doc.getZip().generate({
             type: "blob",
             mimeType:
@@ -156,6 +151,16 @@ export class FilesService {
             // For a 50MB output document, expect 500ms additional CPU time
             compression: "DEFLATE",
         });
+        console.log(blob)
+      //   let blob2 = new Blob(doc.getZip(), {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
+      //   const downloadLink = document.createElement('a');
+      // downloadLink.target = '_self';
+      // const fileName = 'pdf_file.docx';
+      // const data = window.URL.createObjectURL(blob2);
+      // downloadLink.href = data;
+      // downloadLink.download = fileName;
+      // document.body.appendChild(downloadLink);
+      // downloadLink.click();
         // Output the document using Data-URI
         saveAs(blob, "output.docx");
     };

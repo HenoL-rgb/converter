@@ -13,6 +13,6 @@
             <label for="property">{{property}}</label>
             <input type="text" id={{property}} #box [placeholder]="property" (keyup)="this.setObjectProperties(box)">
         </div>
-        <button (click)="this.service.generate()">Button</button>
+        <button (click)="this.service.generate()">Save</button>
     </div>
 </div>
