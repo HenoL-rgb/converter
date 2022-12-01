@@ -15,7 +15,7 @@ export class FilesService {
 
   fileName = '';
   isUploaded = false;
-  file: any;  
+  file: any = null;  
   teststr = '';
   properties: string[] = [];
   testObj = {};

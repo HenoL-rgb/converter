@@ -1,8 +1,8 @@
 
 <div class="container">
     <input type="file" class="file-input" id="doc"
-    (change)="service.onFileSelected($event)" #fileUpload>
-    <div class="fileContainer" (click)="fileUpload.click()">
+    (change)="this.checkFile($event)" #fileUpload>
+    <div class="fileContainer" (click)="fileUpload.click()" #fileContainer>
         <div class="fileContainer__upload">
 
             {{service.fileName || "No file uploaded yet."}}

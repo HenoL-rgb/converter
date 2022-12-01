@@ -11,7 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 import { CompletingPageComponent } from './pages/completing-page/completing-page.component';
-import {PdfViewerModule} from 'ng2-pdf-viewer'
+import {PdfViewerModule} from 'ng2-pdf-viewer';
+import {NgxDocViewerModule} from 'ngx-doc-viewer2';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import {PdfViewerModule} from 'ng2-pdf-viewer'
     CompletingPageComponent
   ],
   imports: [
+    NgxDocViewerModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

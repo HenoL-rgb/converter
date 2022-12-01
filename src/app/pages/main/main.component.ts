@@ -19,24 +19,31 @@ import { FilesService } from 'src/app/services/files.service';
                     style({ width: 100, opacity: 1 }))
           ]
         ),
-        // transition(
-        //   ':leave', 
-        //   [
-        //     style({  opacity: 1 }),
-        //     animate('1s ease-in', 
-        //             style({  opacity: 0 }))
-        //   ]
-        // )
+        transition(
+          ':leave', 
+          [
+            style({  opacity: 1 }),
+            animate('1s ease-in', 
+                    style({  opacity: 0 }))
+          ]
+        )
       ]
     )
   ]
 })
+
+
 export class MainComponent implements OnInit, AfterViewInit {
   @ViewChild('fileUpload', {static: true}) uploadInput!: HTMLInputElement;
+  @ViewChild('fileContainer') fileContainer;
   constructor(private http: HttpClient, public service:FilesService) { }  
 
-  log() {
-    console.log('here')
+  restoreInput() {
+    this.uploadInput.files = null;
+    this.uploadInput.value = '';
+    this.service.fileName = '';
+    this.service.file = null;
+    this.service.isUploaded = false;
   }
 
   saveToAssets() {
@@ -54,12 +61,26 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     if(this.service.isUploaded == false){
-      this.uploadInput.files = null;
-      this.uploadInput.value = '';
-      this.service.fileName = '';
-      this.service.isUploaded = false;
+      this.restoreInput();
     }
 
+  }
+
+  checkFile(event: Event) {
+    const target = event.target as HTMLInputElement;
+
+    if(target.files == null || target.files?.length == 0) return;
+
+    if(target.files[0]?.name.split('?')[0].split('.').pop() != 'docx'){
+      this.fileContainer.nativeElement.classList.add('error');
+      
+      this.restoreInput();
+
+      return;
+    }
+
+    this.fileContainer.nativeElement.classList.remove('error')
+    this.service.onFileSelected(event);
   }
 
   ngAfterViewInit(): void {

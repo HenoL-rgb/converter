@@ -20,10 +20,13 @@
     padding: 0px 15px;
     border-radius: 15px;
     border: 1px solid rgba(0,0,0,0.2);
-    transition: background-color 0.15s ease-in-out;
+    transition: background-color 0.15s ease-in-out opacity 0.2s ease-in-out;
     &:hover {
         background-color: rgb(247, 247, 247);
         cursor: pointer;
+    }
+    &.error {
+        border: 1px solid rgba(247, 4, 4, 0.884);
     }
     // &:hover > &__upload {
    

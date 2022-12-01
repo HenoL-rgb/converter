@@ -46,5 +46,6 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.service.isUploaded = false;
+    this.service.fileName = '';
   }
 }
