@@ -23,7 +23,7 @@ import { FilesService } from 'src/app/services/files.service';
           ':leave', 
           [
             style({  opacity: 1 }),
-            animate('1s ease-in', 
+            animate('0.1s ease-in', 
                     style({  opacity: 0 }))
           ]
         )

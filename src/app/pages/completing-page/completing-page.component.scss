@@ -53,5 +53,10 @@
         background-color: #DE1200;
         color: white;
         font-size: 16px;
+        transition: 0.15s all;
+        &:hover {
+            cursor: pointer;
+            background-color: #c01000;
+        }
     }
 }

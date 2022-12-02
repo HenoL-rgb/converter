@@ -19,6 +19,7 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
     this.getProperties();
     const input = document.getElementById('doc') as HTMLInputElement;
     console.log(this.properties)
+
   }
 
   getProperties(): void {
@@ -28,10 +29,8 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
     }
 
     this.service.getFileReplacements()?.subscribe(res => {
-      let str = this.service.getAllText(res)
-      this.properties = str.split(' ');
-      console.log(this.properties.toString());
-      localStorage.setItem('properties', this.properties.toString());
+      this.properties = [...res];
+      localStorage.setItem('properties', this.properties.join(','));
     });
   }
 
@@ -47,5 +46,6 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.service.isUploaded = false;
     this.service.fileName = '';
+    console.log('d')
   }
 }
