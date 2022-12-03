@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FilesService } from 'src/app/services/files.service';
 
 @Component({
@@ -9,12 +10,15 @@ import { FilesService } from 'src/app/services/files.service';
 })
 export class CompletingPageComponent implements OnInit, OnDestroy {
 
-  constructor(private http:HttpClient, public service:FilesService) { }
+  constructor(private http:HttpClient, public service:FilesService, private route: Router) { }
   
   properties: string[] = [];
-  pdfSrc = `/assets/${this.service.fileName}`;
+  pdfSrc = `https://docs.google.com/gview?url=http://remote.url.tld/assets/${this.service.fileName}`;
 
   ngOnInit(): void {
+    if(this.service.file == null) {
+      this.route.navigate(['/main'])
+    }
 
     this.getProperties();
     const input = document.getElementById('doc') as HTMLInputElement;
@@ -23,15 +27,16 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
   }
 
   getProperties(): void {
-    if(localStorage.hasOwnProperty('properties')) {
-      this.properties = localStorage.getItem('properties')!.split(',');
+    if(sessionStorage.hasOwnProperty('properties')) {
+      this.properties = sessionStorage.getItem('properties')!.split(',');
       return;
     }
 
     this.service.getFileReplacements()?.subscribe(res => {
       this.properties = [...res];
-      localStorage.setItem('properties', this.properties.join(','));
+      sessionStorage.setItem('properties', this.properties.join(','));
     });
+ 
   }
 
   setObjectProperties(field) { 
@@ -40,12 +45,11 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
 
   clearFileInput() {
     this.service.isUploaded = false;
-    localStorage.removeItem('properties')
+    sessionStorage.removeItem('properties');
   }
 
   ngOnDestroy(): void {
     this.service.isUploaded = false;
     this.service.fileName = '';
-    console.log('d')
   }
 }

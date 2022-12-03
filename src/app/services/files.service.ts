@@ -3,6 +3,7 @@ import Docxtemplater from 'docxtemplater';
 import PizZip, { LoadData } from 'pizzip';
 import { saveAs } from 'file-saver';
 import { delay, lastValueFrom, Observable } from 'rxjs';
+import { convertWordFiles } from 'convert-multiple-files';
 
 
 
@@ -29,22 +30,22 @@ export class FilesService {
 
   // }
 
-  // getAllText(str: any): string {
-  //   let finalStr = '';
-  //   for(let i = 0; i < str.length; i++){
-  //     if(str.charAt(i) == '<' && str.charAt(i+1) == '/' &&
-  //     str.charAt(i+2) == 'w' && str.charAt(i+3) == ':' && str.charAt(i+4) == 't' && str.charAt(i+5) == '>'){
-  //       let teststr = '';
-  //       for(let j = i-1; j > 0; j--){
-  //         if(str.charAt(j) == '>') break; 
-  //         teststr += str.charAt(j);
-  //       }
-  //       finalStr += teststr.split('').reverse().join('')
-  //     }
-  //   }
-  //   finalStr = this.removeGarbage(finalStr);
-  //   return finalStr;
-  // }
+  getAllText(str: any): string {
+    let finalStr = '';
+    for(let i = 0; i < str.length; i++){
+      if(str.charAt(i) == '<' && str.charAt(i+1) == '/' &&
+      str.charAt(i+2) == 'w' && str.charAt(i+3) == ':' && str.charAt(i+4) == 't' && str.charAt(i+5) == '>'){
+        let teststr = '';
+        for(let j = i-1; j > 0; j--){
+          if(str.charAt(j) == '>') break; 
+          teststr += str.charAt(j);
+        }
+        finalStr += teststr.split('').reverse().join('')
+      }
+    }
+    //finalStr = this.removeGarbage(finalStr);
+    return finalStr;
+  }
 
   // removeGarbage(finalStr: string): string {
     
@@ -72,7 +73,7 @@ export class FilesService {
 
     if (file) {
       this.file = file;
-
+      
       this.fileName = file.name;
 
       const formData = new FormData();
@@ -82,7 +83,6 @@ export class FilesService {
 
       // upload$.subscribe();
       this.isUploaded = true;
-      
       
       return;
     } 
@@ -124,7 +124,6 @@ export class FilesService {
   generate() {
     let g = this.testObj
     let file = this.file;
-    console.log(file)
     let reader = new FileReader();
     //let str = '';
     reader.readAsBinaryString(this.file as Blob);
@@ -150,11 +149,13 @@ export class FilesService {
           
             compression: "DEFLATE",
         });
-        console.log(blob)
        
+        
+        //saveAs(blob, "output.docx");
         // Output the document using Data-URI
-       // saveAs(blob, "output.docx");
     };
     //this.teststr = str;
   }
+
+
 }

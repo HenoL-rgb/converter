@@ -1,7 +1,7 @@
 <button routerLink="/" class="returnButton" >Back</button>
 
 <div class="container">
-    <input type="file" class="file-input" id="doc"
+    <input accept=".docx" type="file" class="file-input" id="doc"
     (change)="this.checkFile($event)" #fileUpload>
     <div class="fileContainer" (click)="fileUpload.click()" #fileContainer>
         <div class="fileContainer__upload">

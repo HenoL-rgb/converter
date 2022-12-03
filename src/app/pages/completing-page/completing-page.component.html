@@ -2,6 +2,7 @@
 
 <div class="container">
     <div id="showFileContainer">
+
         <!-- <pdf-viewer [src]="pdfSrc"
               [render-text]="true"
               [original-size]="false"
@@ -14,7 +15,7 @@
     <div id="inputFieldsContainer">
         <div class="inputContainer" *ngFor="let property of properties">
             <label for="property">{{property}}</label>
-            <input type="text" id={{property}} #box [placeholder]="property" (keyup)="this.setObjectProperties(box)">
+            <input type="text" id={{property}} #box [placeholder]="property" (change)="this.setObjectProperties(box)">
         </div>
         <button (click)="this.service.generate()">Save</button>
     </div>
