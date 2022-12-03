@@ -139,6 +139,7 @@ export class FilesService {
             paragraphLoop: true,
             linebreaks: true,
         });
+        //wtfis
         // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
  
         doc.render(g);
