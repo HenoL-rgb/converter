@@ -1,21 +1,16 @@
 <button routerLink="/main" class="returnButton" (click)="clearFileInput()">Back</button>
 
 <div class="container">
-    <div id="showFileContainer">
-
-        <!-- <pdf-viewer [src]="pdfSrc"
-              [render-text]="true"
-              [original-size]="false"
-              style="width: 100%; height: 100%"
-        ></pdf-viewer> -->
-        <!-- <ngx-doc-viewer [url]="pdfSrc" viewer="google" style="width:100%;height:50vh;">
-        </ngx-doc-viewer> -->
-        <!-- <embed [src]="pdfSrc" type="application/pdf" width="100%" height="100%"> -->
-    </div>
+    <!-- <div id="showFileContainer">
+    </div> -->
     <div id="inputFieldsContainer">
-        <div class="inputContainer" *ngFor="let property of properties">
-            <label for="property">{{property}}</label>
-            <input type="text" id={{property}} #box [placeholder]="property" (change)="this.setObjectProperties(box)">
+        <div class="documentTitle">{{documentTitle | titlecase}}</div>
+        <div class="inputContainer" >
+            <div class="inputContainer__inputs" *ngFor="let property of properties">
+                <label for="property">{{property}}</label>
+                <input type='text' pattern="[a-zA-Z ]*" id={{property}} #box [placeholder]="property" (change)="this.setObjectProperties(box)">
+            </div>
+           
         </div>
         <button (click)="this.service.generate()">Save</button>
     </div>

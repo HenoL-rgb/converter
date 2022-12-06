@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FilesService } from 'src/app/services/files.service';
 
+
 @Component({
   selector: 'app-completing-page',
   templateUrl: './completing-page.component.html',
@@ -10,10 +11,11 @@ import { FilesService } from 'src/app/services/files.service';
 })
 export class CompletingPageComponent implements OnInit, OnDestroy {
 
+  
   constructor(private http:HttpClient, public service:FilesService, private route: Router) { }
   
   properties: string[] = [];
-  pdfSrc = `https://docs.google.com/gview?url=http://remote.url.tld/assets/${this.service.fileName}`;
+  documentTitle = this.service.fileName || 'Untitled';
 
   ngOnInit(): void {
     if(this.service.file == null) {

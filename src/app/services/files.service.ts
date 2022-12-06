@@ -3,7 +3,6 @@ import Docxtemplater from 'docxtemplater';
 import PizZip, { LoadData } from 'pizzip';
 import { saveAs } from 'file-saver';
 import { delay, lastValueFrom, Observable } from 'rxjs';
-import { convertWordFiles } from 'convert-multiple-files';
 
 
 
@@ -150,7 +149,7 @@ export class FilesService {
         });
        
         
-        //saveAs(blob, "output.docx");
+        saveAs(blob, "output.docx");
         // Output the document using Data-URI
     };
     //this.teststr = str;
