@@ -1,6 +1,6 @@
-<button routerLink="/" class="returnButton" >Back</button>
 
 <div class="container">
+    <button routerLink="/" class="returnButton" >Back</button>
     <div class="content">
         <app-file-form-component></app-file-form-component>
         <button routerLink="/completing-page" *ngIf="service.isUploaded" [@inOutAnimation] class="completeBtn" (click)="service.getFileReplacements()">Complete</button>

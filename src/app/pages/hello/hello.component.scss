@@ -5,8 +5,7 @@ h1 {
 
 .container {
 
-    height: 100vh;
-    padding: 40px;
+    height: calc(100vh - 50px);
     display: grid;
     place-items: center;
 

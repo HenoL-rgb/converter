@@ -1,6 +1,6 @@
-<button routerLink="/chooseFileForTemplate" class="returnButton" (click)="clearFileInput()">Back</button>
 
 <div class="container">
+    <button routerLink="/chooseFileForTemplate" class="returnButton" (click)="clearFileInput()">Back</button>
     <!-- <div id="showFileContainer">
     </div> -->
     <div id="inputFieldsContainer">
@@ -16,6 +16,7 @@
                 <div class="inputContainer__inputs__controllers">
                     <button class="controlBtn active" id={{inputField.id}} #btn1 (click)="this.setReplaceAll(btn1, btn2)">all</button>
                     <button class="controlBtn" id={{inputField.id}} #btn2 (click)="this.setReplaceOne(btn1, btn2)">one</button>
+                    <input class="controlInput" type='text' id={{inputField.id}} #box3 placeholder="custom" (change)="this.setReplacementsCount(btn1, btn2, box3)">
                 </div>
  
             </div>

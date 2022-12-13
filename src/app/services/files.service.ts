@@ -2,8 +2,9 @@ import { Injectable, Input } from '@angular/core';
 import Docxtemplater from 'docxtemplater';
 import PizZip, { LoadData } from 'pizzip';
 import { saveAs } from 'file-saver';
-import { delay, lastValueFrom, Observable } from 'rxjs';
+import { delay, lastValueFrom, max, Observable } from 'rxjs';
 import { replacementInput } from '../interfaces/replacementInput';
+import { skipInterface } from '../interfaces/skipInterface';
 
 
 
@@ -156,6 +157,7 @@ export class FilesService {
   }
 
   generate2(replacementFields: replacementInput[]) {
+    let skipReplacements = new Map();
     const fileName = this.fileName.split('.')[0];
     let reader = new FileReader();
     
@@ -185,18 +187,90 @@ export class FilesService {
           const from = replacementFields[i].from;
           const to = replacementFields[i].to;
 
-          if(to == ''){
+          let isInSkips: any = null;
+
+          if(to == '' && !skipReplacements.has(from)){
+            let skipIndex: number = 0;
+            const allSubstrs = [...replacements.matchAll(new RegExp(from, 'gi'))].map(a => a.index);
+
+            if(state == 'one') {
+              skipIndex = (allSubstrs[0] || 0)  + from.length;
+            }
+            else if(state == 'all'){
+              skipIndex = (replacements.lastIndexOf(from) || 0) + from.length;
+            }
+            else {
+              const maxIndex = allSubstrs.length;
+              const count = +state > maxIndex ? maxIndex : +state;
+              
+              skipIndex = (allSubstrs[count - 1] || 0) + from.length;
+            }
+            skipReplacements.set(from, skipIndex);
+            continue;
+          }
+
+          if(to == '' && skipReplacements.has(from)){
+            let skipIndex: number = 0;
+            const mapSkipIndex = skipReplacements.get(from);
+
+            const allSubstrs = [...replacements.matchAll(new RegExp(from, 'gi'))].map(a => a.index).filter(a => {
+              if(a != undefined &&  a > mapSkipIndex) return true;
+              else return false;
+            });
+            if(state == 'one') {
+              skipIndex = (allSubstrs[0] || 0)  + from.length;
+            }
+            else if(state == 'all'){
+              skipIndex = replacements.lastIndexOf(from) + from.length;
+            }
+            else {         
+              const maxIndex = allSubstrs.length;
+              const count = +state > maxIndex ? maxIndex : +state;
+              
+              skipIndex = (allSubstrs[count - 1] || 0) + from.length;
+            }
+            skipReplacements.set(from, skipIndex);
             continue;
           }
 
           let replacement = '';
+          if(skipReplacements.has(from)){
+            isInSkips = skipReplacements.get(from);
+          }
+          if(isInSkips) {
+            if(state == 'all') {
+              replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replaceAll(from, `{${to}}`)
+            } else if (state == 'one'){
 
-          if(state == 'all') {
-            replacement = replacements!.replaceAll(from, `{${to}}`)
-          } else if (state == 'one'){
-            replacement = replacements!.replace(from, `{${to}}`)
+              replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replace(from, `{${to}}`)
+            }  else {
+              const maxIndex = [...replacements.matchAll(new RegExp(from, 'gi'))].map(a => a.index).length;
+              const count = +state > maxIndex ? maxIndex : +state;
+              for(let i = 0; i < count; i++) {
+                replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replace(from, `{${to}}`)
+                replacements = replacement;
+              }
+              
+              replacements = replacement;
+            }
+
           }
 
+          if(!isInSkips) {
+            if(state == 'all') {
+              replacement = replacements.replaceAll(from, `{${to}}`)
+            } else if (state == 'one'){
+              replacement = replacements.replace(from, `{${to}}`)
+            } else {
+              const maxIndex = [...replacements.matchAll(new RegExp(from, 'gi'))].map(a => a.index).length;
+              const count = +state > maxIndex ? maxIndex : +state;
+              for(let i = 0; i < count; i++) {
+                replacement = replacements.replace(from, `{${to}}`)
+                replacements = replacement;
+              }
+            }
+          }
+          
           replacements = replacement;
         }
 

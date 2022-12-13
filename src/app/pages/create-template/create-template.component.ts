@@ -70,6 +70,18 @@ export class CreateTemplateComponent implements OnInit {
     btn2.classList.remove('active');
   }
 
+  setReplacementsCount(btn1, btn2, field){
+    this.inputFields.forEach(input => {
+      if (input.id == field.id) {
+        input.state = field.value;
+        return;
+      }
+    })
+
+    btn1.classList.remove('active');
+    btn2.classList.remove('active');
+  }
+
   setValueFrom(field) {
 
     this.inputFields.forEach(input => {
@@ -88,8 +100,9 @@ export class CreateTemplateComponent implements OnInit {
         return;
       }
     })
-    console.log(this.inputFields)
   }
+
+
 
   createFile() {
     this.service.generate2(this.inputFields);
