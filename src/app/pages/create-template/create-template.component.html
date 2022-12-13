@@ -1,0 +1,37 @@
+<button routerLink="/chooseFileForTemplate" class="returnButton" (click)="clearFileInput()">Back</button>
+
+<div class="container">
+    <!-- <div id="showFileContainer">
+    </div> -->
+    <div id="inputFieldsContainer">
+        <div class="documentTitle">{{documentTitle | titlecase}}</div>
+        <div class="headers">
+            <div>From:</div>
+            <div>to:</div>
+        </div>
+        <div class="inputContainer" >
+            <div class="inputContainer__inputs" *ngFor="let inputField of inputFields">
+                <input type='text' id={{inputField.id}} #box1 placeholder="ex. John Smith" (change)="this.setValueFrom(box1)">
+                <input type='text' id={{inputField.id}} #box placeholder="ex. name" (change)="this.setValueTo(box)">
+                <div class="inputContainer__inputs__controllers">
+                    <button class="controlBtn active" id={{inputField.id}} #btn1 (click)="this.setReplaceAll(btn1, btn2)">all</button>
+                    <button class="controlBtn" id={{inputField.id}} #btn2 (click)="this.setReplaceOne(btn1, btn2)">one</button>
+                </div>
+ 
+            </div>
+           
+        </div>
+        <div id="inputFieldsContainer__btns">
+            <button class="saveBtn" (click)="this.createFile()">Save</button>
+            <div id="inputFieldsContainer__btns__controllers">
+                <button class="controlBtn" (click)="this.addInputField()">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <button class="controlBtn" (click)="this.removeInputField()">
+                    <mat-icon>remove</mat-icon>
+                </button>
+            </div>
+           
+        </div>
+    </div>
+</div>

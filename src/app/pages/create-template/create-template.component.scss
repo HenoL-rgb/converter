@@ -1,0 +1,151 @@
+.container {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    color: black;
+}
+
+.returnButton {
+    padding: 10px;
+    border: 0;
+    background-color: transparent;
+    font-family: 'IBM Plex Sans', sans-serif;
+    position: absolute;
+    margin: 15px 0 15px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    &:before {
+        content: '<';
+        margin-right: 5px;
+        color: #DE1200;
+    }
+}
+
+#inputFieldsContainer {
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 40px;
+    border-radius: 20px;
+    width: fit-content;
+    display: flex;
+    min-width: 500px;
+    flex-direction: column;
+    row-gap: 15px;
+    .headers {
+        display: grid;
+        grid-template-columns: 1fr 1fr 100px;
+        justify-items: start;
+        div {
+            padding-left: 10px;
+        }
+    }
+    .inputContainer {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+        width: 100%;
+        padding: 10px 0;
+        &__inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr 100px;
+            column-gap: 15px;
+            align-items: center;
+            & input {
+                border: 1px solid rgba(0,0,0,0.2);
+                padding: 8px 15px;
+                border-radius: 20px;
+                outline: 0;
+                max-width: 300px;
+                transition: border 0.2s;
+                &:focus {
+                    border: 1px solid rgba(255, 12, 12, 0.884);
+                    border-width: 1px;
+                }
+            }
+            &__controllers {
+                display: flex;
+                justify-content: space-between;
+                column-gap: 5px;
+                .controlBtn {
+                    cursor: pointer;
+                    padding: 6px 15px;
+                    background-color: #fff;
+                    border: none;
+                    color: rgb(143, 143, 143);
+                    font-size: 16px;
+                    width: fit-content;
+                    height: fit-content;
+                    border-radius: 15px;
+                    &:hover {
+                        background-color: rgb(230, 230, 230);
+                        color:rgb(68, 65, 65);
+                    }
+                    &.active {
+                        background-color: #DE1200;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+    & .documentTitle {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding-bottom: 20px;
+        font-weight: 500;
+        font-size: 18px;
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+    }
+
+    &__btns {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .saveBtn {
+            width: fit-content;
+            height: fit-content;
+            margin-top: 20px;
+            border-radius: 15px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #DE1200;
+            color: white;
+            font-size: 16px;
+            transition: 0.15s all;
+            &:hover {
+                cursor: pointer;
+                background-color: #f71500;
+            }
+            &:active {
+                background-color: rgb(190, 13, 13);
+            }
+        }
+        &__controllers {
+            display: flex;
+            gap: 15px;
+        }
+        .controlBtn {
+            width: 50px;
+            height: 50px;
+            display: grid;
+            place-items: center;
+            margin-top: 20px;
+            border-radius: 50%;
+            border: none;
+            background-color: #DE1200;
+            color: white;
+            font-size: 16px;
+            transition: 0.15s all;
+            &:hover {
+                cursor: pointer;
+                background-color: #f71500;
+            }
+            &:active {
+                background-color: rgb(190, 13, 13);
+            }
+        }
+    }
+    
+}

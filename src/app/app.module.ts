@@ -11,6 +11,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './angular-material.module';
 import { CompletingPageComponent } from './pages/completing-page/completing-page.component';
+import { FileFormComponentComponent } from './components/file-form-component/file-form-component.component';
+import { ChooseFileForTemplateComponent } from './pages/choose-file-for-template/choose-file-for-template.component';
+import { CreateTemplateComponent } from './pages/create-template/create-template.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { CompletingPageComponent } from './pages/completing-page/completing-page
     HeaderComponent,
     FooterComponent,
     HelloComponent,
-    CompletingPageComponent
+    CompletingPageComponent,
+    FileFormComponentComponent,
+    ChooseFileForTemplateComponent,
+    CreateTemplateComponent
   ],
   imports: [
     BrowserModule,

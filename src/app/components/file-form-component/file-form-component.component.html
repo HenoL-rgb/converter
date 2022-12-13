@@ -1,0 +1,14 @@
+<div class="container">
+    <input accept=".docx" type="file" class="file-input" id="doc"
+    (change)="this.checkFile($event)" #fileUpload>
+    <div class="fileContainer" (click)="fileUpload.click()" #fileContainer>
+        <div class="fileContainer__upload">
+
+            {{this.fileName || "No file uploaded yet."}}
+  
+            <button mat-mini-fab color="primary" class="fileContainer__upload__btn">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

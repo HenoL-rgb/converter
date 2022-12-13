@@ -3,6 +3,7 @@ import Docxtemplater from 'docxtemplater';
 import PizZip, { LoadData } from 'pizzip';
 import { saveAs } from 'file-saver';
 import { delay, lastValueFrom, Observable } from 'rxjs';
+import { replacementInput } from '../interfaces/replacementInput';
 
 
 
@@ -68,7 +69,7 @@ export class FilesService {
     const target = event.target as HTMLInputElement;
     if(target.files == null) return;
 
-    const file:File = this.file == null ? target.files[0] : this.file;
+    const file:File = target.files[0];
 
     if (file) {
       this.file = file;
@@ -79,7 +80,6 @@ export class FilesService {
 
       formData.append("thumbnail", file);
       // const upload$ = this.http.post("/api/thumbnail-upload", formData);
-
       // upload$.subscribe();
       this.isUploaded = true;
       
@@ -155,5 +155,69 @@ export class FilesService {
     //this.teststr = str;
   }
 
+  generate2(replacementFields: replacementInput[]) {
+    const fileName = this.fileName.split('.')[0];
+    let reader = new FileReader();
+    
+    reader.readAsBinaryString(this.file as Blob);
+    
+    reader.onerror = function (evt) {
+        console.log("error reading file", evt);
+        alert("error reading file" + evt);
+    };
+     reader.onload = function (evt) {
+        const content: LoadData = evt.target!.result as LoadData;
+        let zip = new PizZip(content);
+ 
+        // doc.render(g);
+        // const blob = doc.getZip().generate({
+        //   type: "blob",
+        //   mimeType: 
+        //     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          
+        //   compression: "DEFLATE",        
+        // });
 
+        let replacements = zip.file('word/document.xml')!.asText();
+
+        for(let i = 0; i < replacementFields.length; i++) {
+          const state = replacementFields[i].state;
+          const from = replacementFields[i].from;
+          const to = replacementFields[i].to;
+
+          if(to == ''){
+            continue;
+          }
+
+          let replacement = '';
+
+          if(state == 'all') {
+            replacement = replacements!.replaceAll(from, `{${to}}`)
+          } else if (state == 'one'){
+            replacement = replacements!.replace(from, `{${to}}`)
+          }
+
+          replacements = replacement;
+        }
+
+        zip.file('word/document.xml', replacements)
+
+        const doc2 = new Docxtemplater(zip, {
+          paragraphLoop: true,
+          linebreaks: true,
+        });
+        const blob3 = doc2.getZip().generate({
+          type: "blob",
+          mimeType: 
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          
+          compression: "DEFLATE",        
+        });
+        
+        // Output the document using Data-URI
+        saveAs(blob3, `${fileName}_template.docx`);
+        // observer.next(blob)
+    };
+    
+  }
 }

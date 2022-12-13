@@ -21,7 +21,8 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
     if(this.service.file == null) {
       this.route.navigate(['/main'])
     }
-
+    console.log(this.service.file)
+    this.documentTitle = this.service.fileName;
     this.getProperties();
     const input = document.getElementById('doc') as HTMLInputElement;
     console.log(this.properties)
