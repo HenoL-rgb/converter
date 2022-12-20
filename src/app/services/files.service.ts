@@ -184,14 +184,17 @@ export class FilesService {
 
         for(let i = 0; i < replacementFields.length; i++) {
           const state = replacementFields[i].state;
-          const from = replacementFields[i].from;
+          let from = replacementFields[i].from;
           const to = replacementFields[i].to;
+          const regExGlobal = new RegExp(from, 'gi');
+          const regEx = new RegExp(from, 'i');
 
           let isInSkips: any = null;
 
           if(to == '' && !skipReplacements.has(from)){
             let skipIndex: number = 0;
-            const allSubstrs = [...replacements.matchAll(new RegExp(from, 'gi'))].map(a => a.index);
+            console.log(replacements.matchAll(regExGlobal));
+            const allSubstrs = [...replacements.matchAll(regExGlobal)].map(a => a.index);
 
             if(state == 'one') {
               skipIndex = (allSubstrs[0] || 0)  + from.length;
@@ -213,7 +216,7 @@ export class FilesService {
             let skipIndex: number = 0;
             const mapSkipIndex = skipReplacements.get(from);
 
-            const allSubstrs = [...replacements.matchAll(new RegExp(from, 'gi'))].map(a => a.index).filter(a => {
+            const allSubstrs = [...replacements.matchAll(regExGlobal)].map(a => a.index).filter(a => {
               if(a != undefined &&  a > mapSkipIndex) return true;
               else return false;
             });
@@ -234,20 +237,22 @@ export class FilesService {
           }
 
           let replacement = '';
+          console.log('here' + state);
           if(skipReplacements.has(from)){
             isInSkips = skipReplacements.get(from);
           }
           if(isInSkips) {
+            console.log('isInSkips' + state);
             if(state == 'all') {
-              replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replaceAll(from, `{${to}}`)
+              replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replaceAll(regExGlobal, `{${to}}`)
             } else if (state == 'one'){
 
-              replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replace(from, `{${to}}`)
+              replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replace(regEx, `{${to}}`)
             }  else {
-              const maxIndex = [...replacements.matchAll(new RegExp(from, 'gi'))].map(a => a.index).length;
+              const maxIndex = [...replacements.matchAll(regExGlobal)].map(a => a.index).length;
               const count = +state > maxIndex ? maxIndex : +state;
               for(let i = 0; i < count; i++) {
-                replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replace(from, `{${to}}`)
+                replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replace(regEx, `{${to}}`)
                 replacements = replacement;
               }
               
@@ -257,15 +262,17 @@ export class FilesService {
           }
 
           if(!isInSkips) {
+            console.log('!isInSkips' + state);
+
             if(state == 'all') {
-              replacement = replacements.replaceAll(from, `{${to}}`)
+              replacement = replacements.replaceAll(regExGlobal, `{${to}}`)
             } else if (state == 'one'){
-              replacement = replacements.replace(from, `{${to}}`)
+              replacement = replacements.replace(regEx, `{${to}}`)
             } else {
-              const maxIndex = [...replacements.matchAll(new RegExp(from, 'gi'))].map(a => a.index).length;
+              const maxIndex = [...replacements.matchAll(regExGlobal)].map(a => a.index).length;
               const count = +state > maxIndex ? maxIndex : +state;
               for(let i = 0; i < count; i++) {
-                replacement = replacements.replace(from, `{${to}}`)
+                replacement = replacements.replace(regEx, `{${to}}`)
                 replacements = replacement;
               }
             }

@@ -1,5 +1,6 @@
 .container {
-    height: calc(100vh - 50px);
+    min-height: calc(100vh - 50px);
+    padding-bottom: 200px;
     display: grid;
     position: relative;
     grid-template-columns: 1fr;
