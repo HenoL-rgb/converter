@@ -179,6 +179,9 @@ export class FilesService {
           const state = replacementFields[i].state;
           let from = replacementFields[i].from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const to = replacementFields[i].to;
+          if(from.includes('-')){
+            from = from.split('-')[0];
+          } 
           const regExGlobal = new RegExp(from, 'gi');
           const regEx = new RegExp(from, 'i');
 
