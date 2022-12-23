@@ -21,23 +21,18 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
     if(this.service.file == null) {
       this.route.navigate(['/main'])
     }
-    console.log(this.service.file)
     this.documentTitle = this.service.fileName;
     this.getProperties();
-    const input = document.getElementById('doc') as HTMLInputElement;
-    console.log(this.properties)
-
   }
 
   getProperties(): void {
-    if(sessionStorage.hasOwnProperty('properties')) {
-      this.properties = sessionStorage.getItem('properties')!.split(',');
-      return;
-    }
-
     this.service.getFileReplacements()?.subscribe(res => {
       this.properties = [...res];
-      sessionStorage.setItem('properties', this.properties.join(','));
+      if(this.properties[0] == '-error'){
+        alert('something went wrong');
+        this.properties.length = 0;
+        this.route.navigate(['/main'])
+      }
     });
  
   }
@@ -56,3 +51,9 @@ export class CompletingPageComponent implements OnInit, OnDestroy {
     this.service.fileName = '';
   }
 }
+
+  // if(sessionStorage.hasOwnProperty('properties')) {
+    //   this.properties = sessionStorage.getItem('properties')!.split(',');
+    //   return;
+    // }
+    //sessionStorage.setItem('properties', this.properties.join(','));

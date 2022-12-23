@@ -4,7 +4,6 @@ import PizZip, { LoadData } from 'pizzip';
 import { saveAs } from 'file-saver';
 import { delay, lastValueFrom, max, Observable } from 'rxjs';
 import { replacementInput } from '../interfaces/replacementInput';
-import { skipInterface } from '../interfaces/skipInterface';
 
 
 
@@ -80,8 +79,7 @@ export class FilesService {
       const formData = new FormData();
 
       formData.append("thumbnail", file);
-      // const upload$ = this.http.post("/api/thumbnail-upload", formData);
-      // upload$.subscribe();
+      
       this.isUploaded = true;
       
       return;
@@ -91,9 +89,7 @@ export class FilesService {
   getFileReplacements() {
     let docs = document.getElementById('doc') as HTMLInputElement;
     let reader = new FileReader();
-    let str = '';
-    let g = this.testObj;
-
+ 
     if(docs?.files == null) return null;
     if (docs.files!.length === 0) {
         alert("No files selected");
@@ -112,20 +108,26 @@ export class FilesService {
 
         const InspectModule = require("docxtemplater/js/inspect-module");
         const iModule = InspectModule();
-        const do2c = new Docxtemplater(zip, { modules: [iModule] });
-        const tags = iModule.getAllTags();
-        const tagsArr = Array.from(Object.keys(tags));
-  
-        observer.next(tagsArr)
+
+        try {
+          console.log('here')
+          const do2c = new Docxtemplater(zip, { modules: [iModule] });
+          const tags = iModule.getAllTags();
+          let tagsArr = Array.from(Object.keys(tags));
+          observer.next(tagsArr)
+          
+        } catch(error) {
+          console.log(error)
+          observer.next(['-error'])
+        }
+
       };
       })
   }
 
   generate() {
     let g = this.testObj
-    let file = this.file;
     let reader = new FileReader();
-    //let str = '';
     reader.readAsBinaryString(this.file as Blob);
     
     reader.onerror = function (evt) {
@@ -135,25 +137,25 @@ export class FilesService {
     reader.onload = function (evt) {
         const content: LoadData = evt.target!.result as LoadData;
         let zip = new PizZip(content);
-        let doc = new Docxtemplater(zip, {
+        try {
+          let doc = new Docxtemplater(zip, {
             paragraphLoop: true,
             linebreaks: true,
-        });
- 
-        doc.render(g);
-        let blob = doc.getZip().generate({
-            type: "blob",
-            mimeType:
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          
-            compression: "DEFLATE",
-        });
-       
-        
-        saveAs(blob, "output.docx");
-        // Output the document using Data-URI
+          });
+          doc.render(g);
+          let blob = doc.getZip().generate({
+              type: "blob",
+              mimeType:
+                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            
+              compression: "DEFLATE",
+          });
+          saveAs(blob, "output.docx");
+        }
+          catch (error) {
+            alert('something went wrong')
+        }        
     };
-    //this.teststr = str;
   }
 
   generate2(replacementFields: replacementInput[]) {
@@ -170,21 +172,12 @@ export class FilesService {
      reader.onload = function (evt) {
         const content: LoadData = evt.target!.result as LoadData;
         let zip = new PizZip(content);
- 
-        // doc.render(g);
-        // const blob = doc.getZip().generate({
-        //   type: "blob",
-        //   mimeType: 
-        //     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-          
-        //   compression: "DEFLATE",        
-        // });
-
+        
         let replacements = zip.file('word/document.xml')!.asText();
 
         for(let i = 0; i < replacementFields.length; i++) {
           const state = replacementFields[i].state;
-          let from = replacementFields[i].from;
+          let from = replacementFields[i].from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const to = replacementFields[i].to;
           const regExGlobal = new RegExp(from, 'gi');
           const regEx = new RegExp(from, 'i');
@@ -193,7 +186,6 @@ export class FilesService {
 
           if(to == '' && !skipReplacements.has(from)){
             let skipIndex: number = 0;
-            console.log(replacements.matchAll(regExGlobal));
             const allSubstrs = [...replacements.matchAll(regExGlobal)].map(a => a.index);
 
             if(state == 'one') {
@@ -237,12 +229,10 @@ export class FilesService {
           }
 
           let replacement = '';
-          console.log('here' + state);
           if(skipReplacements.has(from)){
             isInSkips = skipReplacements.get(from);
           }
           if(isInSkips) {
-            console.log('isInSkips' + state);
             if(state == 'all') {
               replacement = replacements.slice(0, isInSkips) + replacements.slice(isInSkips).replaceAll(regExGlobal, `{${to}}`)
             } else if (state == 'one'){
@@ -262,7 +252,6 @@ export class FilesService {
           }
 
           if(!isInSkips) {
-            console.log('!isInSkips' + state);
 
             if(state == 'all') {
               replacement = replacements.replaceAll(regExGlobal, `{${to}}`)

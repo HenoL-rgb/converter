@@ -3,6 +3,7 @@
     <button routerLink="/" class="returnButton" >Back</button>
     <div class="content">
         <app-file-form-component></app-file-form-component>
-        <button routerLink="/completing-page" *ngIf="service.isUploaded" [@inOutAnimation] class="completeBtn" (click)="service.getFileReplacements()">Complete</button>
+        <button routerLink="/completing-page" *ngIf="service.isUploaded" 
+        [@inOutAnimation] class="completeBtn">Complete</button>
     </div>
 </div>

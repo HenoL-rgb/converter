@@ -4,6 +4,7 @@
 
     <div class="content">
         <app-file-form-component></app-file-form-component>
-        <button routerLink="/createTemplate" *ngIf="service.isUploaded" [@inOutAnimation] class="completeBtn" (click)="service.getFileReplacements()">Generate</button>
+        <button routerLink="/createTemplate" *ngIf="service.isUploaded" 
+        [@inOutAnimation] class="completeBtn">Generate</button>
     </div>
 </div>
